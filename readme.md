@@ -16,20 +16,22 @@ pip install grabseqs
 # dependencies
 conda install conda-forge::pigz -y
 conda install bioconda::sra-tools -y
+grabseqs --help
 ```
 
 #### 1.2. Download raw reads
 
 ```bash
+conda activate grabseqs
 # to download a sequence illumina run
-grabseqs sra -t 4 -m metadata.csv SRR8893090
+grabseqs sra -t 4 -m metadata.csv -o ./01_raw_reads/short_reads -r 4 SRR8893090
 
 # first run for nanopor reads
-grabseqs sra -t 4 -m metadata.csv SRR8893087
+grabseqs sra -t 4 -m metadata.csv -o ./01_raw_reads/long_reads -r 4 SRR8893087
 # second run for nanopore reads
-grabseqs sra -t 4 -m metadata.csv SRR8893086
+grabseqs sra -t 4 -m metadata.csv -o ./01_raw_reads/long_reads -r 4 SRR8893086
 # pacbio reads
-grabseqs sra -t 4 -m metadata.csv SRR8893091
+grabseqs sra -t 4 -m metadata.csv -o ./01_raw_reads/long_reads -r 4 SRR8893091
 ```
 ---
 

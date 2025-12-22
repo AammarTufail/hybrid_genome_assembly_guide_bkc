@@ -1,9 +1,9 @@
 # ignore fastq files
-*/*.fastq
-*/*.fastq.gz
+*fastq
+*fastq.gz
 # ignore bam files
-*/*.bam
-*/*.bai
+*bam
+*bai
 # ignore intermediate files
 *.tmp
 *.log
