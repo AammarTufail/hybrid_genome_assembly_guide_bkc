@@ -251,7 +251,7 @@ bakta \
     05_hybrid_genome_assembly/01_short_only_assembly/assembly.fasta \
     --db /home/codanics/databases_important/bakta_db/db-light \
     -t 10 --verbose \
-    -o 07_genome_annotation/02_bakta/ \
+    -o 07_genome_annotation/02_bakta/01_short_only_assembly/ \
     --prefix codanics_bakta_short_only \
     --complete --force
 # long reads only assembly
@@ -259,7 +259,7 @@ bakta \
     05_hybrid_genome_assembly/02_long_only_assembly/assembly.fasta \
     --db /home/codanics/databases_important/bakta_db/db-light \
     -t 10 --verbose \
-    -o 07_genome_annotation/02_bakta/ \
+    -o 07_genome_annotation/02_bakta/02_long_only_assembly/ \
     --prefix codanics_bakta_long_only \
     --complete --force
 # hybrid assembly
@@ -267,6 +267,6 @@ bakta \
     05_hybrid_genome_assembly/03_hybrid_assembly/assembly.fasta \
     --db /home/codanics/databases_important/bakta_db/db-light \
     -t 10 --verbose \
-    -o 07_genome_annotation/02_bakta/ \
+    -o 07_genome_annotation/02_bakta/03_hybrid_assembly/ \
     --prefix codanics_bakta_hybrid \
     --complete --force
