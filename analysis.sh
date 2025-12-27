@@ -368,8 +368,16 @@ genomad \
     /home/codanics/databases_important/genomad_db/genomad_db \
     --conservative
 
-
-# genomad end-to-end --cleanup --splits 8 241155E.fna genomad_output_relaxed $WORK/bacteroides_project/usefull_databases/genomad_db --relaxed
-# genomad end-to-end --cleanup 241155E.fna genomad_output_relaxed $WORK/bacteroides_project/usefull_databases/genomad_db --relaxed
-# genomad end-to-end --cleanup 241155E.fna genomad_output_conservative $WORK/bacteroides_project/usefull_databases/genomad_db --conservative
-
+# you may also run genomad one by one module as per your requirement
+conda activate 08_genomad
+# Run genomad modules one by one
+genomad annotate codanics_bakta_hybrid.fna genomad_output \
+    /home/codanics/databases_important/genomad_db/genomad_db
+genomad find-proviruses codanics_bakta_hybrid.fna genomad_output \
+    /home/codanics/databases_important/genomad_db/genomad_db
+genomad marker-classification codanics_bakta_hybrid.fna genomad_output \
+    /home/codanics/databases_important/genomad_db/genomad_db
+genomad nn-classification codanics_bakta_hybrid.fna genomad_output
+genomad aggregated-classification codanics_bakta_hybrid.fna genomad_output
+genomad score-calibration codanics_bakta_hybrid.fna genomad_output
+genomad summary codanics_bakta_hybrid.fna genomad_output
