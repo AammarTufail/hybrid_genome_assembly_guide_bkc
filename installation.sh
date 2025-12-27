@@ -129,3 +129,33 @@ rm /home/codanics/databases_important/bakta_db_light.tar.xz
 export BAKTA_DB="/home/codanics/databases_important/bakta_db/db-light"
 # update amrfinderplus database if needed
 amrfinder_update --force_update --database /home/codanics/databases_important/bakta_db/db-light/amrfinderplus-db
+
+
+# plasmid finder with plassembler
+conda deactivate
+conda env remove -n 06_plassembler -y
+# conda install mamba -y
+conda create -n 06_plassembler -y
+conda activate 06_plassembler
+mamba install -c conda-forge -c bioconda plassembler=1.8.1 -y
+# download databases and please try several times if you see errors
+plassembler download -d /home/codanics/databases_important/plassembler_db -f
+
+
+# abricate
+conda create -n 07_abricate -y
+conda activate 07_abricate
+conda install -c conda-forge -c bioconda abricate -y
+# download abricate databases
+abricate --check
+abricate --list
+
+
+#geNomad
+conda env remove -n 08_genomad -y
+conda create -n 08_genomad -y
+conda activate 08_genomad
+conda install -c conda-forge -c bioconda genomad=1.8 -y
+genomad --help
+mkdir -p /home/codanics/databases_important/genomad_db
+genomad download-database /home/codanics/databases_important/genomad_db

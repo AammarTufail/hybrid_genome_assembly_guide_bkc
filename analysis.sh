@@ -270,3 +270,106 @@ bakta \
     -o 07_genome_annotation/02_bakta/03_hybrid_assembly/ \
     --prefix codanics_bakta_hybrid \
     --complete --force
+
+################## plassembler for plasmid finding #####################
+conda activate 06_plassembler
+# this will take around 10-15 minutes to run
+plassembler run \
+    -d /home/codanics/databases_important/plassembler_db \
+    -1 03_reads_processed/short_reads/codanics_1_processed.fastq.gz \
+    -2 03_reads_processed/short_reads/codanics_2_processed.fastq.gz \
+    -l 03_reads_processed/long_reads/codanics_long_filtered.fastq.gz \
+    -o 08_plassembler_output/ \
+    -t 10
+
+################## quality of assemblies using checkm2, quast and busco #####################
+mkdir -p 09_assembly_quality_assessment
+mkdir -p 09_assembly_quality_assessment/01_checkm2
+mkdir -p 09_assembly_quality_assessment/02_quast
+mkdir -p 09_assembly_quality_assessment/03_busco
+# checkm2
+conda activate 04a_checkm2
+export CHECKM2DB="/home/codanics/databases_important/checkm2_db/CheckM2_database/uniref100.KO.1.dmnd"
+# hybrid assembly
+checkm2 predict \
+    --threads 10 \
+    --input 08_plassembler_output/unicycler_output/assembly.fasta \
+    --output-directory 09_assembly_quality_assessment/01_checkm2/
+
+
+################## genome quality assessment using quast #####################
+conda activate 04b_quast
+# short reads only assembly
+
+# hybrid assembly
+quast \
+    -o 09_assembly_quality_assessment/02_quast/quast_results \
+    -t 10 \
+    08_plassembler_output/unicycler_output/assembly.fasta \
+    --circos --glimmer --rna-finding \
+    --conserved-genes-finding \
+    # --report-all-metrics \
+    --use-all-alignments
+
+################## genome quality assessment using busco #####################
+conda activate 04c_busco
+
+# hybrid assembly
+busco \
+    -i 08_plassembler_output/unicycler_output/assembly.fasta \
+    -o 09_assembly_quality_assessment/03_busco/busco_results \
+    -l bacteria_odb12 \
+    -m genome \
+    -c 10
+busco --plot 06_genome_quality_assessment/03_busco/03_hybrid_assembly/busco_results
+
+
+################## Abricate for AMR genes #####################
+mkdir -p 10_abricate_results
+conda activate 07_abricate
+abricate --list
+abricate --db ncbi \
+    05_hybrid_genome_assembly/03_hybrid_assembly/assembly.fasta > \
+    10_abricate_results/abricate_ncbi_results.tsv
+abricate --db resfinder \
+    05_hybrid_genome_assembly/03_hybrid_assembly/assembly.fasta > \
+    10_abricate_results/abricate_resfinder_results.tsv
+abricate --db card \
+    05_hybrid_genome_assembly/03_hybrid_assembly/assembly.fasta > \
+    10_abricate_results/abricate_card_results.tsv
+abricate --db vfdb \
+    05_hybrid_genome_assembly/03_hybrid_assembly/assembly.fasta > \
+    10_abricate_results/abricate_vfdb_results.tsv
+# combine
+abricate --summary 10_abricate_results/*.tsv > 10_abricate_results/abricate_summary.tsv
+
+################## genomad #####################
+mkdir -p 11_genomad_results
+cp 07_genome_annotation/01_prokka/03_hybrid_assembly/codanics_prokka_hybrid.fna \
+    11_genomad_results/
+conda activate 08_genomad
+
+# for relaxed run
+genomad \
+    end-to-end \
+    --cleanup \
+    --splits 8 \
+    codanics_bakta_hybrid.fna \
+    genomad_output_relaxed \
+    /home/codanics/databases_important/genomad_db/genomad_db \
+    --relaxed
+# for conservative run
+genomad \
+    end-to-end \
+    --cleanup \
+    --splits 8 \
+    codanics_bakta_hybrid.fna \
+    genomad_output_conservative \
+    /home/codanics/databases_important/genomad_db/genomad_db \
+    --conservative
+
+
+# genomad end-to-end --cleanup --splits 8 241155E.fna genomad_output_relaxed $WORK/bacteroides_project/usefull_databases/genomad_db --relaxed
+# genomad end-to-end --cleanup 241155E.fna genomad_output_relaxed $WORK/bacteroides_project/usefull_databases/genomad_db --relaxed
+# genomad end-to-end --cleanup 241155E.fna genomad_output_conservative $WORK/bacteroides_project/usefull_databases/genomad_db --conservative
+
