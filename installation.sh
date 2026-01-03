@@ -3,6 +3,24 @@ echo "Setting up conda environments for short read quality control and multiqc"
 # initialize conda for this script
 eval "$(conda shell.bash hook)"
 
+# install grabseqs
+conda create -n grabseqs -y
+conda activate grabseqs
+# conda install grabseqs -c louiejtaylor -c bioconda -c conda-forge -y
+# mamba install grabseqs -c louiejtaylor -c bioconda -c conda-forge -y
+conda install python=3.9 -y
+pip install grabseqs
+# dependencies
+conda install conda-forge::pigz -y
+conda install bioconda::sra-tools -y
+
+# # to download a sequence
+# grabseqs sra SRR35136585
+# # to get whole project
+# grabseqs sra SRP610834
+# # srr file with -t
+# grabseqs sra -t 4 -m metadata.csv SRR8893090
+
 # remove previous conda environment if exists
 conda env remove -n 01_short_read_qc -y
 conda env remove -n 02_multiqc -y
@@ -159,3 +177,23 @@ conda install -c conda-forge -c bioconda genomad=1.8 -y
 genomad --help
 mkdir -p /home/codanics/databases_important/genomad_db
 genomad download-database /home/codanics/databases_important/genomad_db
+
+
+
+## Genome classification with GTDB-Tk
+# conda env remove -n gtdbtk-2.6.1 -y
+conda create -n gtdbtk-2.6.1 -c conda-forge -c bioconda gtdbtk=2.6.1 -y
+conda activate gtdbtk-2.6.1
+# download GTDB database (approx 80GB)
+# making folder for database
+mkdir -p /media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data
+# downloading database ~100GB
+wget https://data.gtdb.aau.ecogenomic.org/releases/release226/226.0/auxillary_files/gtdbtk_package/full_package/gtdbtk_r226_data.tar.gz \
+    -O /media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data/gtdbtk_r226_data.tar.gz
+# extracting database
+tar -xzvf /media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data/gtdbtk_r226_data.tar.gz \
+    -C /media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data
+# setting GTDBTK_DATA_PATH environment variable using conda env config vars
+conda env config vars set GTDBTK_DATA_PATH="/media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data/release226"
+# test run
+gtdbtk --help
