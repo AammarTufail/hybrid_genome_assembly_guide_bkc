@@ -181,19 +181,27 @@ genomad download-database /home/codanics/databases_important/genomad_db
 
 
 ## Genome classification with GTDB-Tk
-# conda env remove -n gtdbtk-2.6.1 -y
 conda create -n gtdbtk-2.6.1 -c conda-forge -c bioconda gtdbtk=2.6.1 -y
 conda activate gtdbtk-2.6.1
-# download GTDB database (approx 80GB)
+
+# download GTDB database (approx 140GB)
 # making folder for database
-mkdir -p /media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data
+mkdir -p /media/codanics/ext_ssd/gtdbtk_r226_data/gtdbtk_r226_data
 # downloading database ~100GB
 wget https://data.gtdb.aau.ecogenomic.org/releases/release226/226.0/auxillary_files/gtdbtk_package/full_package/gtdbtk_r226_data.tar.gz \
     -O /media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data/gtdbtk_r226_data.tar.gz
 # extracting database
-tar -xzvf /media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data/gtdbtk_r226_data.tar.gz \
-    -C /media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data
+tar xvzf /media/codanics/ext_ssd/gtdbtk_r226_data/gtdbtk_r226_data.tar.gz \
+    -C /media/codanics/ext_ssd/gtdbtk_r226_data/gtdbtk_r226_data \
+    --strip 1 | tqdm --unit=file \
+    --total=307538 \
+    --smoothing=0.1 >/dev/null
+
 # setting GTDBTK_DATA_PATH environment variable using conda env config vars
-conda env config vars set GTDBTK_DATA_PATH="/media/codanics/Softwares/databases_for_bioinformatics/gtdbtk_r226_data/release226"
+conda env config vars set GTDBTK_DATA_PATH="/media/codanics/ext_ssd/gtdbtk_r226_data/gtdbtk_r226_data"
+conda deactivate
+conda activate gtdbtk-2.6.1
 # test run
 gtdbtk --help
+gtdbtk check_install
+

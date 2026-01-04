@@ -384,13 +384,12 @@ genomad summary codanics_bakta_hybrid.fna genomad_output
 
 
 ################## Genome classification with GTDB-Tk #####################
-mkdir -p 12_gtdbtk_classification
 conda activate gtdbtk-2.6.1
+rm -rf 12_gtdbtk_classification && mkdir -p 12_gtdbtk_classification
 gtdbtk classify_wf \
     --genome_dir 05_hybrid_genome_assembly/03_hybrid_assembly/ \
     --out_dir 12_gtdbtk_classification/ \
     --cpus 10 \
     --extension fasta \
-    --prefix codanics_gtdbtk \
     --pplacer_cpus 1 \
-    --scratch_dir /media/codanics/Softwares/databases_for_bioinformatics
+    --scratch_dir /media/codanics/ext_ssd
