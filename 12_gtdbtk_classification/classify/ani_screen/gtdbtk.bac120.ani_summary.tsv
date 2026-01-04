@@ -1,0 +1,2 @@
+user_genome	reference_genome	skani_ani	skani_af	reference_taxonomy	other_related_references(genome_id,species_name,radius,ANI,AF)
+assembly	GCF_040094755.1	98.53	0.7919	d__Bacteria;p__Bacteroidota;c__Bacteroidia;o__Bacteroidales;f__Bacteroidaceae;g__Bacteroides;s__Bacteroides hominis	GCF_019583405.1, s__Bacteroides fragilis_B, 95.0, 93.96, 0.645; GCA_947646015.1, s__Bacteroides sp947646015, 95.0, 87.78, 0.2; GCF_000025985.1, s__Bacteroides fragilis, 95.0, 87.99, 0.457

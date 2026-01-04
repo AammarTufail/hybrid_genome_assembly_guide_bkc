@@ -1,0 +1,44 @@
+{
+    "version": "2.6.1",
+    "command_line": "gtdbtk classify_wf --genome_dir 05_hybrid_genome_assembly/03_hybrid_assembly/ --out_dir 12_gtdbtk_classification/ --cpus 10 --extension fasta --pplacer_cpus 1 --scratch_dir /media/codanics/ext_ssd",
+    "database_version": "r226",
+    "database_path": "/media/codanics/ext_ssd/gtdbtk_r226_data/gtdbtk_r226_data",
+    "steps": [
+        {
+            "name": "ANI screen",
+            "output_dir": "12_gtdbtk_classification/",
+            "starts_at": "2026-01-04T06:44:37.299252",
+            "ends_at": "2026-01-04T07:15:23.919958",
+            "duration": "0:30:46",
+            "status": "completed",
+            "genome_dir": "05_hybrid_genome_assembly/03_hybrid_assembly/",
+            "batchfile": null,
+            "min_af": 0.5,
+            "output_files": {
+                "bac120": "12_gtdbtk_classification/classify/ani_screen/gtdbtk.bac120.ani_summary.tsv"
+            }
+        },
+        {
+            "name": "classify",
+            "output_dir": "12_gtdbtk_classification/",
+            "starts_at": "2026-01-04T07:15:23.952972",
+            "ends_at": "2026-01-04T07:15:24.858769",
+            "duration": "0:00:00",
+            "status": "completed",
+            "align_dir": null,
+            "genome_dir": "05_hybrid_genome_assembly/03_hybrid_assembly/",
+            "batchfile": null,
+            "scratch_dir": "/media/codanics/ext_ssd",
+            "debug_option": false,
+            "full_tree": false,
+            "skip_ani_screen": true,
+            "output_files": {
+                "bac120": [
+                    "12_gtdbtk_classification/classify/gtdbtk.bac120.summary.tsv"
+                ]
+            }
+        }
+    ],
+    "output_dir": "12_gtdbtk_classification/",
+    "path": "12_gtdbtk_classification/gtdbtk.json"
+}
